@@ -8,7 +8,7 @@ const CHATBOT_USER_OBJ = {
 };//ChatBot user object 
 
 export default function App() {
-  const[index, setindex] = useState(0);
+  var[index, setindex] = useState(0);
   var[x, setx] = useState(Math.floor(Math.random() * 100));
   var[y, sety] = useState(Math.floor(Math.random() * 100));
   var[z, setz] = useState(x+y);
@@ -84,25 +84,32 @@ export default function App() {
       
     if(index < 4){//we'll do each round 4 times
       
-      if(userMessages[0].text == "Addition"){
-        setIndex = 1;
-        setx=Math.floor(Math.random() * 100);//randomize x
-        sety=Math.floor(Math.random() * 100);//randomize y
-        setz=(x+y);//setting z to addtion
-        addBotMessage(level1[index].equation);
+      if(userMessages[0].text == level1[1].addition){
+        setindex(1);
+        setx(Math.floor(Math.random() * 100));//randomize x
+        sety(Math.floor(Math.random() * 100));//randomize y
+        setz(x+y);//setting z to addtion
+        addBotMessage(level1[1].equation);
+        console.log("index:", index);
+        console.log(level1[index].equation);
       }
-      if(userMessages[0].text==level1[index].correct){
-          addBotMessage("Correct");
-        }
-      else if(userMessages[0].text == level1[2].subtraction){
-        setx=Math.floor(Math.random() * 100);//randomize x
-        sety=Math.floor(Math.random() * 100);//randomize y
-        setz=(x-y);//setting z to addtion
+
+      
+      if(userMessages[0].text == level1[2].subtraction){
+        setindex(2);
+        setx(Math.floor(Math.random() * 100));//randomize x
+        sety(Math.floor(Math.random() * 100));//randomize y
+        setz(x-y);//setting z to addtion
         addBotMessage(level1[2].equation);
-        setindex(index + 1);
+        console.log("index:", index);
       }
-      else{
-        addBotMessage(level1[0].fail);
+      if(userMessages[0].text==level1[1].correct || userMessages[0].text==level1[2].correct){
+          addBotMessage("Correct");
+          addBotMessage("'Addition' or 'Subtraction'");
+          setindex(0);
+        }
+      else if (index != 0){
+        addBotMessage("Please Try Again!");
       }
     }
     else{
