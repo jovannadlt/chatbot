@@ -9,8 +9,9 @@ const CHATBOT_USER_OBJ = {
 
 export default function App() {
   var[index, setindex] = useState(0);
-  var[x, setx] = useState(Math.floor(Math.random() * 100));
-  var[y, sety] = useState(Math.floor(Math.random() * 100));
+  var[count, setcount] = useState(0);
+  var[x, setx] = useState(Math.floor(Math.random() * 50));
+  var[y, sety] = useState(Math.floor(Math.random() * 50));
   var[z, setz] = useState(x+y);
   const [messages, setMessages] = useState([]);//we use state variable to have a message and change it 
   const level1 = [
@@ -21,14 +22,14 @@ export default function App() {
       
     },
     {
-      addition:"Addition",
+      addition:"add",
       equation:
         x+"+"+y,
       correct: z,
       fail: "Please try again",
     },//0
     {
-      subtraction:"Subtraction",
+      subtraction:"subtract",
       equation:
         x+"-"+y,
       correct: "z",
@@ -40,7 +41,7 @@ export default function App() {
     setMessages([//setMessage is from the usestate
       {
         _id: 1,
-        text: "Hello, welcome to simple trivia! If you are ready to play write 'Addition' or 'Subtraction'",
+        text: "Hello, welcome to simple trivia! If you are ready to play write 'Add' or 'Subtract'",
         createdAt: new Date(),
         user: CHATBOT_USER_OBJ,
       },
@@ -68,52 +69,46 @@ export default function App() {
     ]);
   };//text
 
-
-  // const respondToUser = (userMessages) => {
-  //   console.log("User message text:", userMessages[0].text);
-
-  //   // Simple chatbot logic (aka Checkpoint 2 onwards) here!
-
-  //   addBotMessage("I am da response!");
-  // };
-
   const respondToUser = (userMessages, level1) => {
 
     console.log("User message text:", userMessages[0].text);
     console.log("index:", index);
+    console.log("count before if statement: ", count);
       
-    if(index < 4){//we'll do each round 4 times
+    if(count <= 4){//we'll do each round 4 times
       
-      if(userMessages[0].text == level1[1].addition){
+      if(userMessages[0].text.toLowerCase() == level1[1].addition){
         setindex(1);
-        setx(Math.floor(Math.random() * 100));//randomize x
-        sety(Math.floor(Math.random() * 100));//randomize y
+        setx(Math.floor(Math.random() * 50));//randomize x
+        sety(Math.floor(Math.random() * 50));//randomize y
         setz(x+y);//setting z to addtion
         addBotMessage(level1[1].equation);
         console.log("index:", index);
         console.log(level1[index].equation);
       }
-
-      
-      if(userMessages[0].text == level1[2].subtraction){
+      if(userMessages[0].text.toLowerCase() == level1[2].subtraction){
         setindex(2);
-        setx(Math.floor(Math.random() * 100));//randomize x
-        sety(Math.floor(Math.random() * 100));//randomize y
+        setx(Math.floor(Math.random() * 50));//randomize x
+        sety(Math.floor(Math.random() * 50));//randomize y
         setz(x-y);//setting z to addtion
         addBotMessage(level1[2].equation);
         console.log("index:", index);
       }
       if(userMessages[0].text==level1[1].correct || userMessages[0].text==level1[2].correct){
           addBotMessage("Correct");
-          addBotMessage("'Addition' or 'Subtraction'");
+          if(count==4){
+            addBotMessage("end of game");
+          }
+          else{
+          addBotMessage("'Add' or 'Subtract'");
           setindex(0);
+          setcount(count + 1);
+          }
+
         }
       else if (index != 0){
         addBotMessage("Please Try Again!");
       }
-    }
-    else{
-      addBotMessage(messages);
     }
 
   };//userMEssages
